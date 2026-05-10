@@ -1,5 +1,6 @@
 databases:
   - name: helpdesk-db
+    plan: free
     databaseName: helpdesk
     user: helpdesk_user
 
@@ -7,6 +8,7 @@ services:
   - type: web
     name: helpdesk-backend
     env: python
+    plan: free
     rootDir: helpdesk
     buildCommand: "./build.sh"
     startCommand: "gunicorn helpdesk.wsgi:application"
@@ -27,6 +29,7 @@ services:
   - type: web
     name: helpdesk-frontend
     env: static
+    plan: free
     rootDir: helpdesk/frontend
     buildCommand: "npm install && npm run build"
     staticPublishPath: "./build"
