@@ -7,6 +7,7 @@ services:
   - type: web
     name: helpdesk-backend
     env: python
+    root: helpdesk
     buildCommand: "./build.sh"
     startCommand: "gunicorn helpdesk.wsgi:application"
     envVars:
@@ -26,8 +27,9 @@ services:
   - type: web
     name: helpdesk-frontend
     env: static
-    buildCommand: "cd frontend && npm install && npm run build"
-    staticPublishPath: "./frontend/build"
+    root: helpdesk/frontend
+    buildCommand: "npm install && npm run build"
+    staticPublishPath: "./build"
     envVars:
       - key: REACT_APP_API_URL
         fromService:
