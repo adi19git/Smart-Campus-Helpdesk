@@ -28,6 +28,7 @@ class Ticket(models.Model):
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     priority = models.CharField(max_length=10, choices=PRIORITY_CHOICES)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='open')
+    rating = models.IntegerField(null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
