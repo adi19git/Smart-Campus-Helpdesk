@@ -26,10 +26,8 @@ services:
       - key: CORS_ALLOW_ALL_ORIGINS
         value: "True"
 
-  - type: web
+  - type: static
     name: helpdesk-frontend
-    env: static
-    plan: free
     rootDir: helpdesk/frontend
     buildCommand: "npm install && npm run build"
     staticPublishPath: "./build"
