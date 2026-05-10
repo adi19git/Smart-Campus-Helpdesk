@@ -31,6 +31,15 @@ A full-stack helpdesk management system for university campuses, built with Djan
 2. `npm install`
 3. `npm start`
 
-## Deployment
+## Deployment (Railway)
 
-The project is pre-configured for Render via `render.yaml`. Connect your GitHub repository to Render and use the Blueprint deployment option.
+### Backend
+1. Create a new service on Railway from your GitHub repo.
+2. In **Settings**, set the **Root Directory** to `helpdesk`.
+3. Railway will use the `Procfile` and `build.sh` automatically.
+4. Add environment variables: `DATABASE_URL`, `SECRET_KEY`, `ALLOWED_HOSTS` (set to `.railway.app`).
+
+### Frontend
+1. Create another service from the same repo.
+2. In **Settings**, set the **Root Directory** to `helpdesk/frontend`.
+3. Add environment variable: `REACT_APP_API_URL` (set to your Railway backend URL).
