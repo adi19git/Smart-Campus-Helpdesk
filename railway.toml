@@ -1,0 +1,42 @@
+[build]
+builder = "nixpacks"
+
+[build.nixpacks]
+providers = ["python", "nodejs"]
+
+[[services]]
+name = "helpdesk-backend"
+type = "python"
+startCommand = "cd helpdesk && gunicorn helpdesk.wsgi:application"
+buildCommand = "./build.sh"
+root = "."
+
+[services.build.nixpacks]
+providers = ["python"]
+
+[[services.envVars]]
+name = "DEBUG"
+value = "False"
+
+[[services.envVars]]
+name = "ALLOWED_HOSTS"
+value = "*"
+
+[[services.envVars]]
+name = "CORS_ALLOW_ALL_ORIGINS"
+value = "True"
+
+[[databases]]
+name = "helpdesk-postgres"
+type = "postgresql"
+
+[[services]]
+name = "helpdesk-frontend"
+type = "static"
+root = "helpdesk/frontend"
+buildCommand = "npm install && npm run build"
+publishPath = "build"
+
+[services.routes]
+pattern = "/*"
+destination = "/index.html"
