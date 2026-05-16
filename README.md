@@ -43,3 +43,15 @@ A full-stack helpdesk management system for university campuses, built with Djan
 1. Create another service from the same repo.
 2. In **Settings**, set the **Root Directory** to `helpdesk/frontend`.
 3. Add environment variable: `REACT_APP_API_URL` (set to your Railway backend URL).
+
+## Demo Credentials
+
+You can use the following credentials to test the live application:
+
+**Admin Account**
+- Username: `admin`
+- Password: `***REMOVED***`
+
+**Student Account**
+- Username: `student1`
+- Password: `***REMOVED***`
