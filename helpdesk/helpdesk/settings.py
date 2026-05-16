@@ -116,9 +116,13 @@ if DATABASE_URL:
         'default': dj_database_url.config(
             default=DATABASE_URL,
             conn_max_age=600,
-            ssl_require=os.environ.get('DB_SSL_REQUIRE', 'False') == 'True',
+            ssl_require=False,
         )
     }
+    # Railway internal Postgres does not support SSL — explicitly disable it
+    if 'railway.internal' in DATABASE_URL:
+        DATABASES['default'].setdefault('OPTIONS', {})
+        DATABASES['default']['OPTIONS']['sslmode'] = 'disable'
 else:
     # Local development fallback — SQLite (no external DB required)
     DATABASES = {
