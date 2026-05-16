@@ -54,7 +54,7 @@ const Login = () => {
       {/* Left Panel - Image Illustration */}
       <div className="hidden md:flex md:w-[50%] lg:w-[55%] relative overflow-hidden bg-[#e0f0ff]">
         <img 
-          src="/images/login-illustration.png" 
+          src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
           alt="Smart Campus Helpdesk Illustration" 
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
