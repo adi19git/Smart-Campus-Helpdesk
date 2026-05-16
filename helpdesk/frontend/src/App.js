@@ -4,6 +4,7 @@ import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/Layout/ProtectedRoute';
 import Login from './pages/Login';
+import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import CreateTicket from './pages/CreateTicket';
 
@@ -13,13 +14,17 @@ function App() {
       <BrowserRouter>
         <Toaster position="top-right" />
         <Routes>
+          {/* Public routes */}
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           
+          {/* Protected routes — require authentication */}
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<Dashboard />} />
             <Route path="/tickets/new" element={<CreateTicket />} />
           </Route>
 
+          {/* Catch-all — redirect to dashboard */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>

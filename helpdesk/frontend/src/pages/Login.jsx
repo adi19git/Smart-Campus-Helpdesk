@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Loader2, Hexagon, ShieldCheck, User as UserIcon } from 'lucide-react';
 import toast from 'react-hot-toast';
 
+/**
+ * Login page with Student/Admin tab toggle, Google OAuth placeholder,
+ * and glassmorphism design. Shows backend-specific error messages.
+ */
 const Login = () => {
   const [loginType, setLoginType] = useState('student');
   const [username, setUsername] = useState('');
@@ -13,6 +17,38 @@ const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
+  /**
+   * Extract a user-friendly error message from an Axios error response.
+   */
+  const getErrorMessage = (err) => {
+    if (err.response) {
+      const data = err.response.data;
+
+      // SimpleJWT returns { detail: "No active account found..." }
+      if (data?.detail) return data.detail;
+
+      // DRF validation errors: { field: ["error msg"] }
+      if (typeof data === 'object') {
+        const firstKey = Object.keys(data)[0];
+        if (firstKey) {
+          const value = data[firstKey];
+          return Array.isArray(value) ? value[0] : String(value);
+        }
+      }
+
+      // HTTP status fallbacks
+      if (err.response.status === 401) return 'Invalid username or password.';
+      if (err.response.status === 429) return 'Too many attempts. Please wait and try again.';
+      if (err.response.status >= 500) return 'Server error. Please try again later.';
+    }
+
+    // Network / timeout errors
+    if (err.code === 'ECONNABORTED') return 'Request timed out. Check your connection.';
+    if (!err.response) return 'Network error. Please check your internet connection.';
+
+    return 'Login failed. Please try again.';
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -21,7 +57,7 @@ const Login = () => {
       toast.success('Successfully logged in!');
       navigate('/');
     } catch (err) {
-      toast.error('Invalid username or password');
+      toast.error(getErrorMessage(err));
     } finally {
       setIsLoading(false);
     }
@@ -60,9 +96,10 @@ const Login = () => {
         <div className="animate-fade-in-up-delay-1">
           <button
             onClick={handleGoogleLogin}
+            type="button"
             className="w-full flex justify-center items-center gap-3 py-3 px-4 bg-white/60 hover:bg-white/80 border border-white/50 backdrop-blur-sm rounded-xl shadow-sm text-sm font-semibold text-slate-700 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 hover:shadow-md"
           >
-            <svg className="w-5 h-5" viewBox="0 0 24 24">
+            <svg className="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
               <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
               <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
@@ -112,12 +149,14 @@ const Login = () => {
           </div>
 
           <div className="animate-fade-in-up-delay-2">
-            <label className="block text-sm font-semibold text-slate-800 mb-1.5">
+            <label htmlFor="username" className="block text-sm font-semibold text-slate-800 mb-1.5">
               {loginType === 'admin' ? 'Admin Username' : 'Student Username'}
             </label>
             <input
+              id="username"
               type="text"
               required
+              autoComplete="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="glow-input appearance-none block w-full px-4 py-3 bg-white/60 border border-white/50 rounded-xl shadow-sm placeholder-slate-400 text-slate-900 focus:outline-none focus:bg-white focus:border-blue-400 sm:text-sm transition-all duration-300"
@@ -126,12 +165,14 @@ const Login = () => {
           </div>
 
           <div className="animate-fade-in-up-delay-2">
-            <label className="block text-sm font-semibold text-slate-800 mb-1.5">
+            <label htmlFor="password" className="block text-sm font-semibold text-slate-800 mb-1.5">
               Password
             </label>
             <input
+              id="password"
               type="password"
               required
+              autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="glow-input appearance-none block w-full px-4 py-3 bg-white/60 border border-white/50 rounded-xl shadow-sm placeholder-slate-400 text-slate-900 focus:outline-none focus:bg-white focus:border-blue-400 sm:text-sm transition-all duration-300"
@@ -154,9 +195,9 @@ const Login = () => {
               </label>
             </div>
             <div className="text-sm">
-              <a href="#" className="font-semibold text-blue-700 hover:text-blue-800 transition-colors">
+              <span className="font-semibold text-blue-700 cursor-pointer hover:text-blue-800 transition-colors">
                 Forgot password?
-              </a>
+              </span>
             </div>
           </div>
 
@@ -177,9 +218,9 @@ const Login = () => {
 
         <p className="mt-8 text-center text-sm font-medium text-slate-600 animate-fade-in-up-delay-3">
           Don't have an account?{' '}
-          <a href="#" className="font-bold text-blue-700 hover:text-blue-800 transition-colors">
+          <Link to="/register" className="font-bold text-blue-700 hover:text-blue-800 transition-colors">
             Sign up now
-          </a>
+          </Link>
         </p>
       </div>
     </div>
