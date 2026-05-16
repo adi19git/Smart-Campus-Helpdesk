@@ -51,107 +51,13 @@ const Login = () => {
   return (
     <div className="min-h-screen w-full flex flex-col md:flex-row font-sans">
       
-      {/* Left Panel - Branding (Dark Blue Gradient) */}
-      <div className="hidden md:flex md:w-[45%] lg:w-[40%] bg-gradient-to-br from-[#1E3A8A] via-[#1E40AF] to-[#2563EB] flex-col justify-between p-12 lg:p-16 relative overflow-hidden text-white">
-        
-        {/* Subtle Background Pattern */}
-        <div className="absolute inset-0 opacity-10 pointer-events-none" 
-             style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '32px 32px' }}>
-        </div>
-        
-        {/* Decorative Blobs */}
-        <div className="absolute -top-32 -left-32 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 -right-32 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl"></div>
-
-        <div className="relative z-10">
-          {/* Logo */}
-          <div className="flex items-center gap-3 mb-16 animate-fade-in-up">
-            <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-lg">
-              <GraduationCap className="w-7 h-7 text-blue-700" />
-            </div>
-            <h1 className="text-2xl font-bold leading-tight">Smart Campus<br/>Helpdesk</h1>
-          </div>
-
-          {/* Hero Copy */}
-          <div className="animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-            <h2 className="text-4xl lg:text-5xl font-extrabold mb-6 leading-[1.1]">
-              Here to help,<br/>every step of the way.
-            </h2>
-            <p className="text-blue-100 text-lg mb-12 max-w-sm">
-              Report issues, track requests, and get help faster.
-            </p>
-
-            {/* Feature List */}
-            <div className="space-y-8">
-              <div className="flex items-start gap-5">
-                <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center shrink-0 border border-white/10">
-                  <ClipboardList className="w-6 h-6 text-blue-200" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-white mb-1">Easy Reporting</h3>
-                  <p className="text-sm text-blue-200/80 leading-relaxed">Submit issues in<br/>just a few steps.</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-5">
-                <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center shrink-0 border border-white/10">
-                  <LineChart className="w-6 h-6 text-blue-200" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-white mb-1">Track Progress</h3>
-                  <p className="text-sm text-blue-200/80 leading-relaxed">Stay updated with real-time<br/>status tracking.</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-5">
-                <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center shrink-0 border border-white/10">
-                  <Headset className="w-6 h-6 text-blue-200" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-white mb-1">Better Support</h3>
-                  <p className="text-sm text-blue-200/80 leading-relaxed">We're here to help you<br/>on campus.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* CSS Campus Skyline Illustration */}
-        <div className="relative z-10 w-full h-32 mt-12 opacity-30 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-          <div className="absolute bottom-0 w-full h-px bg-white/50"></div>
-          {/* Building 1 */}
-          <div className="absolute bottom-0 left-[5%] w-[15%] h-[60%] border border-b-0 border-white/50 rounded-t-sm flex flex-col justify-evenly items-center py-2">
-            <div className="flex gap-2"><div className="w-1 h-2 border border-white/50"></div><div className="w-1 h-2 border border-white/50"></div></div>
-            <div className="flex gap-2"><div className="w-1 h-2 border border-white/50"></div><div className="w-1 h-2 border border-white/50"></div></div>
-          </div>
-          {/* Main Tower */}
-          <div className="absolute bottom-0 left-[25%] w-[25%] h-[90%] border border-b-0 border-white/50 rounded-t-md flex flex-col items-center">
-             <div className="w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-b-[15px] border-b-white/50 absolute -top-[15px]"></div>
-             <div className="w-[10%] h-4 border-l border-r border-white/50 absolute -top-[20px]"></div>
-             <div className="w-6 h-6 rounded-full border border-white/50 mt-4 flex items-center justify-center">
-                <div className="w-1 h-1 bg-white/50 rounded-full"></div>
-             </div>
-             <div className="grid grid-cols-3 gap-2 mt-4 px-2 w-full">
-               <div className="h-3 border border-white/50"></div><div className="h-3 border border-white/50"></div><div className="h-3 border border-white/50"></div>
-               <div className="h-3 border border-white/50"></div><div className="h-3 border border-white/50"></div><div className="h-3 border border-white/50"></div>
-             </div>
-             <div className="absolute bottom-0 w-6 h-8 border border-b-0 border-white/50 rounded-t-sm"></div>
-          </div>
-          {/* Building 3 */}
-          <div className="absolute bottom-0 right-[25%] w-[20%] h-[70%] border border-b-0 border-white/50 rounded-t-sm">
-             <div className="grid grid-cols-2 gap-2 mt-4 px-2 w-full">
-               <div className="h-3 border border-white/50"></div><div className="h-3 border border-white/50"></div>
-               <div className="h-3 border border-white/50"></div><div className="h-3 border border-white/50"></div>
-             </div>
-          </div>
-          {/* Trees */}
-          <div className="absolute bottom-0 left-[80%] w-3 h-8 border-l border-white/50">
-             <div className="absolute -top-4 -left-3 w-6 h-6 rounded-full border border-white/50"></div>
-          </div>
-          <div className="absolute bottom-0 right-[5%] w-3 h-6 border-l border-white/50">
-             <div className="absolute -top-3 -left-2 w-4 h-4 rounded-full border border-white/50"></div>
-          </div>
-        </div>
+      {/* Left Panel - Image Illustration */}
+      <div className="hidden md:flex md:w-[50%] lg:w-[55%] relative overflow-hidden bg-[#e0f0ff]">
+        <img 
+          src="/images/login-illustration.png" 
+          alt="Smart Campus Helpdesk Illustration" 
+          className="absolute inset-0 w-full h-full object-cover object-center"
+        />
       </div>
 
       {/* Right Panel - Form (White/Light) */}
