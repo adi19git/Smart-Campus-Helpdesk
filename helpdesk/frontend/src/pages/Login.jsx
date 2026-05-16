@@ -49,7 +49,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col md:flex-row font-sans">
+    <div className="h-screen w-full flex flex-col md:flex-row font-sans overflow-hidden">
       
       {/* Left Panel - Image Illustration */}
       <div className="hidden md:flex md:w-[50%] lg:w-[55%] relative overflow-hidden bg-[#e0f0ff]">
@@ -61,12 +61,12 @@ const Login = () => {
       </div>
 
       {/* Right Panel - Form (White/Light) */}
-      <div className="flex-1 bg-slate-50 flex items-center justify-center p-6 sm:p-12 relative">
+      <div className="flex-1 bg-slate-50 flex items-center justify-center p-4 sm:p-8 relative overflow-y-auto custom-scrollbar">
         
         {/* The Card */}
-        <div className="w-full max-w-[460px] bg-white rounded-3xl p-8 sm:p-12 shadow-[0_8px_30px_rgb(0,0,0,0.04)] animate-fade-in-up">
+        <div className="w-full max-w-[460px] bg-white rounded-3xl p-6 sm:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] animate-fade-in-up my-auto">
           
-          <div className="flex flex-col items-center text-center mb-8">
+          <div className="flex flex-col items-center text-center mb-6">
             <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center border border-slate-100 shadow-sm mb-6">
               <GraduationCap className="w-8 h-8 text-blue-600" />
             </div>
@@ -75,13 +75,13 @@ const Login = () => {
           </div>
 
           {/* Divider */}
-          <div className="relative flex items-center py-5">
+          <div className="relative flex items-center py-4">
             <div className="flex-grow border-t border-slate-200"></div>
             <span className="flex-shrink-0 mx-4 text-xs font-bold tracking-widest text-slate-400 uppercase">Sign in as</span>
             <div className="flex-grow border-t border-slate-200"></div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-5">
             
             {/* Toggle Tabs */}
             <div className="flex p-1 bg-slate-50 rounded-xl border border-slate-200/60">
@@ -124,7 +124,7 @@ const Login = () => {
                     required
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    className="block w-full pl-11 pr-4 py-3.5 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition-all sm:text-sm font-medium shadow-sm"
+                    className="block w-full pl-11 pr-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition-all sm:text-sm font-medium shadow-sm"
                     placeholder={loginType === 'admin' ? 'e.g. admin' : 'e.g. student'}
                   />
                 </div>
@@ -141,7 +141,7 @@ const Login = () => {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="block w-full pl-11 pr-12 py-3.5 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition-all sm:text-sm font-medium shadow-sm tracking-widest"
+                    className="block w-full pl-11 pr-12 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition-all sm:text-sm font-medium shadow-sm tracking-widest"
                     placeholder="••••••••"
                   />
                   <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
@@ -183,14 +183,14 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full flex justify-center items-center py-3.5 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-[#2563EB] hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-70 transition-all"
+                className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-[#2563EB] hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-70 transition-all"
               >
                 {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Sign In'}
               </button>
             </div>
           </form>
 
-          <div className="mt-8 text-center text-sm font-medium text-slate-500">
+          <div className="mt-6 text-center text-sm font-medium text-slate-500">
             Need help? <a href="mailto:support@campus.edu" className="font-bold text-blue-600 hover:text-blue-700">Contact helpdesk</a>
           </div>
         </div>
