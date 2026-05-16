@@ -1,23 +1,33 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Loader2, GraduationCap, ClipboardList, LineChart, Headset, User as UserIcon, Shield, Lock, Eye, EyeOff } from 'lucide-react';
+import { Loader2, Hexagon, ShieldCheck, User as UserIcon } from 'lucide-react';
 import toast from 'react-hot-toast';
 
+/**
+ * Login page with Student/Admin tab toggle, Google OAuth placeholder,
+ * and glassmorphism design. Shows backend-specific error messages.
+ */
 const Login = () => {
   const [loginType, setLoginType] = useState('student');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
+  /**
+   * Extract a user-friendly error message from an Axios error response.
+   */
   const getErrorMessage = (err) => {
     if (err.response) {
       const data = err.response.data;
+
+      // SimpleJWT returns { detail: "No active account found..." }
       if (data?.detail) return data.detail;
+
+      // DRF validation errors: { field: ["error msg"] }
       if (typeof data === 'object') {
         const firstKey = Object.keys(data)[0];
         if (firstKey) {
@@ -25,12 +35,17 @@ const Login = () => {
           return Array.isArray(value) ? value[0] : String(value);
         }
       }
+
+      // HTTP status fallbacks
       if (err.response.status === 401) return 'Invalid username or password.';
       if (err.response.status === 429) return 'Too many attempts. Please wait and try again.';
       if (err.response.status >= 500) return 'Server error. Please try again later.';
     }
+
+    // Network / timeout errors
     if (err.code === 'ECONNABORTED') return 'Request timed out. Check your connection.';
     if (!err.response) return 'Network error. Please check your internet connection.';
+
     return 'Login failed. Please try again.';
   };
 
@@ -48,246 +63,165 @@ const Login = () => {
     }
   };
 
+  const handleGoogleLogin = () => {
+    toast('Google login is not configured for this demo.', {
+      icon: 'ℹ️',
+    });
+  };
+
   return (
-    <div className="min-h-screen w-full flex flex-col md:flex-row font-sans">
-      
-      {/* Left Panel - Branding (Dark Blue Gradient) */}
-      <div className="hidden md:flex md:w-[45%] lg:w-[40%] bg-gradient-to-br from-[#1E3A8A] via-[#1E40AF] to-[#2563EB] flex-col justify-between p-12 lg:p-16 relative overflow-hidden text-white">
-        
-        {/* Subtle Background Pattern */}
-        <div className="absolute inset-0 opacity-10 pointer-events-none" 
-             style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '32px 32px' }}>
-        </div>
-        
-        {/* Decorative Blobs */}
-        <div className="absolute -top-32 -left-32 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 -right-32 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl"></div>
+    <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 aurora-bg relative overflow-hidden">
 
-        <div className="relative z-10">
-          {/* Logo */}
-          <div className="flex items-center gap-3 mb-16 animate-fade-in-up">
-            <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-lg">
-              <GraduationCap className="w-7 h-7 text-blue-700" />
-            </div>
-            <h1 className="text-2xl font-bold leading-tight">Smart Campus<br/>Helpdesk</h1>
+      {/* Decorative blurred circles behind the glass */}
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-[128px] opacity-50 animate-float" />
+      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-[128px] opacity-50 animate-float" style={{ animationDelay: '3s' }} />
+
+      {/* The Glass Card */}
+      <div className="glass-card w-full max-w-[420px] rounded-[2rem] p-8 sm:p-10 relative z-10 animate-fade-in-up">
+
+        {/* Header section */}
+        <div className="flex flex-col items-center mb-8">
+          <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-md border border-white/40 mb-5 shadow-inner">
+            <Hexagon className="w-8 h-8 text-blue-600 fill-blue-600" />
           </div>
+          <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight text-center">
+            Welcome Back
+          </h2>
+          <p className="mt-2 text-sm text-slate-600 text-center font-medium">
+            Sign in to access your dashboard
+          </p>
+        </div>
 
-          {/* Hero Copy */}
-          <div className="animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-            <h2 className="text-4xl lg:text-5xl font-extrabold mb-6 leading-[1.1]">
-              Here to help,<br/>every step of the way.
-            </h2>
-            <p className="text-blue-100 text-lg mb-12 max-w-sm">
-              Report issues, track requests, and get help faster.
-            </p>
+        {/* Social Login */}
+        <div className="animate-fade-in-up-delay-1">
+          <button
+            onClick={handleGoogleLogin}
+            type="button"
+            className="w-full flex justify-center items-center gap-3 py-3 px-4 bg-white/60 hover:bg-white/80 border border-white/50 backdrop-blur-sm rounded-xl shadow-sm text-sm font-semibold text-slate-700 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 hover:shadow-md"
+          >
+            <svg className="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
+            </svg>
+            Continue with Google
+          </button>
+        </div>
 
-            {/* Feature List */}
-            <div className="space-y-8">
-              <div className="flex items-start gap-5">
-                <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center shrink-0 border border-white/10">
-                  <ClipboardList className="w-6 h-6 text-blue-200" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-white mb-1">Easy Reporting</h3>
-                  <p className="text-sm text-blue-200/80 leading-relaxed">Submit issues in<br/>just a few steps.</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-5">
-                <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center shrink-0 border border-white/10">
-                  <LineChart className="w-6 h-6 text-blue-200" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-white mb-1">Track Progress</h3>
-                  <p className="text-sm text-blue-200/80 leading-relaxed">Stay updated with real-time<br/>status tracking.</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-5">
-                <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center shrink-0 border border-white/10">
-                  <Headset className="w-6 h-6 text-blue-200" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-white mb-1">Better Support</h3>
-                  <p className="text-sm text-blue-200/80 leading-relaxed">We're here to help you<br/>on campus.</p>
-                </div>
-              </div>
+        {/* Divider */}
+        <div className="mt-6 mb-6 animate-fade-in-up-delay-1">
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-slate-300/50" />
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-3 bg-transparent text-slate-500 font-medium tracking-wide text-xs uppercase">Or sign in with username</span>
             </div>
           </div>
         </div>
 
-        {/* CSS Campus Skyline Illustration */}
-        <div className="relative z-10 w-full h-32 mt-12 opacity-30 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-          <div className="absolute bottom-0 w-full h-px bg-white/50"></div>
-          {/* Building 1 */}
-          <div className="absolute bottom-0 left-[5%] w-[15%] h-[60%] border border-b-0 border-white/50 rounded-t-sm flex flex-col justify-evenly items-center py-2">
-            <div className="flex gap-2"><div className="w-1 h-2 border border-white/50"></div><div className="w-1 h-2 border border-white/50"></div></div>
-            <div className="flex gap-2"><div className="w-1 h-2 border border-white/50"></div><div className="w-1 h-2 border border-white/50"></div></div>
-          </div>
-          {/* Main Tower */}
-          <div className="absolute bottom-0 left-[25%] w-[25%] h-[90%] border border-b-0 border-white/50 rounded-t-md flex flex-col items-center">
-             <div className="w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-b-[15px] border-b-white/50 absolute -top-[15px]"></div>
-             <div className="w-[10%] h-4 border-l border-r border-white/50 absolute -top-[20px]"></div>
-             <div className="w-6 h-6 rounded-full border border-white/50 mt-4 flex items-center justify-center">
-                <div className="w-1 h-1 bg-white/50 rounded-full"></div>
-             </div>
-             <div className="grid grid-cols-3 gap-2 mt-4 px-2 w-full">
-               <div className="h-3 border border-white/50"></div><div className="h-3 border border-white/50"></div><div className="h-3 border border-white/50"></div>
-               <div className="h-3 border border-white/50"></div><div className="h-3 border border-white/50"></div><div className="h-3 border border-white/50"></div>
-             </div>
-             <div className="absolute bottom-0 w-6 h-8 border border-b-0 border-white/50 rounded-t-sm"></div>
-          </div>
-          {/* Building 3 */}
-          <div className="absolute bottom-0 right-[25%] w-[20%] h-[70%] border border-b-0 border-white/50 rounded-t-sm">
-             <div className="grid grid-cols-2 gap-2 mt-4 px-2 w-full">
-               <div className="h-3 border border-white/50"></div><div className="h-3 border border-white/50"></div>
-               <div className="h-3 border border-white/50"></div><div className="h-3 border border-white/50"></div>
-             </div>
-          </div>
-          {/* Trees */}
-          <div className="absolute bottom-0 left-[80%] w-3 h-8 border-l border-white/50">
-             <div className="absolute -top-4 -left-3 w-6 h-6 rounded-full border border-white/50"></div>
-          </div>
-          <div className="absolute bottom-0 right-[5%] w-3 h-6 border-l border-white/50">
-             <div className="absolute -top-3 -left-2 w-4 h-4 rounded-full border border-white/50"></div>
-          </div>
-        </div>
-      </div>
+        <form className="space-y-5" onSubmit={handleSubmit}>
 
-      {/* Right Panel - Form (White/Light) */}
-      <div className="flex-1 bg-slate-50 flex items-center justify-center p-6 sm:p-12 relative">
-        
-        {/* The Card */}
-        <div className="w-full max-w-[460px] bg-white rounded-3xl p-8 sm:p-12 shadow-[0_8px_30px_rgb(0,0,0,0.04)] animate-fade-in-up">
-          
-          <div className="flex flex-col items-center text-center mb-8">
-            <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center border border-slate-100 shadow-sm mb-6">
-              <GraduationCap className="w-8 h-8 text-blue-600" />
+          {/* Animated Tabs */}
+          <div className="relative flex bg-white/40 backdrop-blur-md p-1 rounded-xl mb-6 shadow-inner border border-white/30 animate-fade-in-up-delay-1">
+            {/* Sliding Pill */}
+            <div
+              className={`absolute top-1 bottom-1 w-[calc(50%-4px)] bg-white rounded-lg shadow transition-transform duration-300 ease-in-out ${loginType === 'admin' ? 'translate-x-full left-1' : 'left-1'}`}
+            />
+
+            <button
+              type="button"
+              onClick={() => setLoginType('student')}
+              className={`relative z-10 flex-1 flex items-center justify-center gap-2 py-2 text-sm font-semibold rounded-lg transition-colors duration-300 ${loginType === 'student' ? 'text-blue-700' : 'text-slate-600 hover:text-slate-800'}`}
+            >
+              <UserIcon className="w-4 h-4" />
+              Student
+            </button>
+            <button
+              type="button"
+              onClick={() => setLoginType('admin')}
+              className={`relative z-10 flex-1 flex items-center justify-center gap-2 py-2 text-sm font-semibold rounded-lg transition-colors duration-300 ${loginType === 'admin' ? 'text-blue-700' : 'text-slate-600 hover:text-slate-800'}`}
+            >
+              <ShieldCheck className="w-4 h-4" />
+              Admin
+            </button>
+          </div>
+
+          <div className="animate-fade-in-up-delay-2">
+            <label htmlFor="username" className="block text-sm font-semibold text-slate-800 mb-1.5">
+              {loginType === 'admin' ? 'Admin Username' : 'Student Username'}
+            </label>
+            <input
+              id="username"
+              type="text"
+              required
+              autoComplete="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="glow-input appearance-none block w-full px-4 py-3 bg-white/60 border border-white/50 rounded-xl shadow-sm placeholder-slate-400 text-slate-900 focus:outline-none focus:bg-white focus:border-blue-400 sm:text-sm transition-all duration-300"
+              placeholder={loginType === 'admin' ? 'e.g. admin' : 'e.g. student'}
+            />
+          </div>
+
+          <div className="animate-fade-in-up-delay-2">
+            <label htmlFor="password" className="block text-sm font-semibold text-slate-800 mb-1.5">
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              required
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="glow-input appearance-none block w-full px-4 py-3 bg-white/60 border border-white/50 rounded-xl shadow-sm placeholder-slate-400 text-slate-900 focus:outline-none focus:bg-white focus:border-blue-400 sm:text-sm transition-all duration-300"
+              placeholder="••••••••"
+            />
+          </div>
+
+          <div className="flex items-center justify-between animate-fade-in-up-delay-3">
+            <div className="flex items-center">
+              <input
+                id="remember-me"
+                name="remember-me"
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-white/50 rounded cursor-pointer transition-colors bg-white/60"
+              />
+              <label htmlFor="remember-me" className="ml-2 block text-sm font-medium text-slate-700 cursor-pointer select-none">
+                Remember me
+              </label>
             </div>
-            <h2 className="text-3xl font-extrabold text-slate-900 mb-2">Welcome Back</h2>
-            <p className="text-slate-500 font-medium">Sign in to access your dashboard</p>
+            <div className="text-sm">
+              <span className="font-semibold text-blue-700 cursor-pointer hover:text-blue-800 transition-colors">
+                Forgot password?
+              </span>
+            </div>
           </div>
 
-          {/* Divider */}
-          <div className="relative flex items-center py-5">
-            <div className="flex-grow border-t border-slate-200"></div>
-            <span className="flex-shrink-0 mx-4 text-xs font-bold tracking-widest text-slate-400 uppercase">Sign in as</span>
-            <div className="flex-grow border-t border-slate-200"></div>
+          <div className="animate-fade-in-up-delay-3 pt-2">
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="shimmer-button w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-lg text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none transition-all duration-300"
+            >
+              {isLoading ? (
+                <Loader2 className="w-5 h-5 animate-spin" />
+              ) : (
+                'Sign in to your account'
+              )}
+            </button>
           </div>
+        </form>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            
-            {/* Toggle Tabs */}
-            <div className="flex p-1 bg-slate-50 rounded-xl border border-slate-200/60">
-              <button
-                type="button"
-                onClick={() => setLoginType('student')}
-                className={`flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-bold rounded-lg transition-all ${
-                  loginType === 'student' 
-                    ? 'bg-white text-blue-600 shadow-sm border border-slate-200/50' 
-                    : 'text-slate-500 hover:text-slate-700'
-                }`}
-              >
-                <UserIcon className="w-4 h-4" />
-                Student
-              </button>
-              <button
-                type="button"
-                onClick={() => setLoginType('admin')}
-                className={`flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-bold rounded-lg transition-all ${
-                  loginType === 'admin' 
-                    ? 'bg-white text-blue-600 shadow-sm border border-slate-200/50' 
-                    : 'text-slate-500 hover:text-slate-700'
-                }`}
-              >
-                <Shield className="w-4 h-4" />
-                Admin
-              </button>
-            </div>
-
-            {/* Inputs */}
-            <div className="space-y-5">
-              <div>
-                <label className="block text-sm font-bold text-slate-700 mb-2">Username</label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <UserIcon className="h-5 w-5 text-slate-400" />
-                  </div>
-                  <input
-                    type="text"
-                    required
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    className="block w-full pl-11 pr-4 py-3.5 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition-all sm:text-sm font-medium shadow-sm"
-                    placeholder={loginType === 'admin' ? 'e.g. admin' : 'e.g. student'}
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-bold text-slate-700 mb-2">Password</label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <Lock className="h-5 w-5 text-slate-400" />
-                  </div>
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="block w-full pl-11 pr-12 py-3.5 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition-all sm:text-sm font-medium shadow-sm tracking-widest"
-                    placeholder="••••••••"
-                  />
-                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="p-1 text-slate-400 hover:text-slate-600 focus:outline-none rounded-md"
-                    >
-                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Remember & Forgot */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  id="remember-me"
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-slate-300 rounded cursor-pointer"
-                />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-slate-600 font-medium cursor-pointer">
-                  Remember me
-                </label>
-              </div>
-              <div className="text-sm">
-                <Link to="/forgot-password" className="font-bold text-blue-600 hover:text-blue-700">
-                  Forgot password?
-                </Link>
-              </div>
-            </div>
-
-            {/* Submit Button */}
-            <div>
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full flex justify-center items-center py-3.5 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-[#2563EB] hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-70 transition-all"
-              >
-                {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Sign In'}
-              </button>
-            </div>
-          </form>
-
-          <div className="mt-8 text-center text-sm font-medium text-slate-500">
-            Need help? <a href="mailto:support@campus.edu" className="font-bold text-blue-600 hover:text-blue-700">Contact helpdesk</a>
-          </div>
-        </div>
+        <p className="mt-8 text-center text-sm font-medium text-slate-600 animate-fade-in-up-delay-3">
+          Don't have an account?{' '}
+          <Link to="/register" className="font-bold text-blue-700 hover:text-blue-800 transition-colors">
+            Sign up now
+          </Link>
+        </p>
       </div>
     </div>
   );
