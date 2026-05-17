@@ -1,4 +1,0 @@
-MDhyJsyDrDhKegjJxwUUyojsvRIESctm==>***REMOVED***
-postgresql://postgres:MDhyJsyDrDhKegjJxwUUyojsvRIESctm@yamanote.proxy.rlwy.net:14070/railway==>***REMOVED***
-Admin@2026!==>***REMOVED***
-Student@2026!==>***REMOVED***
