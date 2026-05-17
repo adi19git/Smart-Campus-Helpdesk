@@ -50,8 +50,8 @@ You can use the following credentials to test the live application:
 
 **Admin Account**
 - Username: `admin`
-- Password: `<Set via ADMIN_PASSWORD>`
+- Password: `Admin@2026!`
 
 **Student Account**
 - Username: `student1`
-- Password: `<Set via STUDENT_PASSWORD>`
+- Password: `Student@2026!`
