@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, PlusCircle, LogOut, Ticket, Settings } from 'lucide-react';
+import { LayoutDashboard, PlusCircle, LogOut, Ticket } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 const Sidebar = () => {

@@ -9,9 +9,8 @@ import { getTickets } from '../../api/tickets';
 import toast from 'react-hot-toast';
 
 const StudentDashboard = () => {
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const [tickets, setTickets] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [showWorkflow, setShowWorkflow] = useState(false);
 
   useEffect(() => {
@@ -21,8 +20,6 @@ const StudentDashboard = () => {
         setTickets(data.results || data);
       } catch (err) {
         toast.error('Failed to fetch tickets');
-      } finally {
-        setLoading(false);
       }
     };
     fetchTickets();
@@ -55,27 +52,27 @@ const StudentDashboard = () => {
 
           {/* Navigation */}
           <nav className="flex-1 space-y-2">
-            <a href="#" className="flex items-center gap-4 px-4 py-3 bg-blue-500/20 text-blue-200 rounded-2xl border border-blue-500/30 transition-all font-semibold shadow-inner">
+            <button className="flex w-full text-left items-center gap-4 px-4 py-3 bg-blue-500/20 text-blue-200 rounded-2xl border border-blue-500/30 transition-all font-semibold shadow-inner">
               <LayoutDashboard className="w-5 h-5" /> Dashboard <span className="ml-auto text-[10px] bg-blue-500 text-white px-2 py-0.5 rounded-full">Active</span>
-            </a>
-            <a href="#" className="flex items-center gap-4 px-4 py-3 text-slate-300 hover:text-white hover:bg-white/5 rounded-2xl transition-all font-medium">
+            </button>
+            <button className="flex w-full text-left items-center gap-4 px-4 py-3 text-slate-300 hover:text-white hover:bg-white/5 rounded-2xl transition-all font-medium">
               <FileText className="w-5 h-5" /> My Tickets
-            </a>
-            <a href="#" className="flex items-center gap-4 px-4 py-3 text-slate-300 hover:text-white hover:bg-white/5 rounded-2xl transition-all font-medium">
+            </button>
+            <button className="flex w-full text-left items-center gap-4 px-4 py-3 text-slate-300 hover:text-white hover:bg-white/5 rounded-2xl transition-all font-medium">
               <TicketIcon className="w-5 h-5" /> Raise Ticket
-            </a>
-            <a href="#" className="flex items-center gap-4 px-4 py-3 text-slate-300 hover:text-white hover:bg-white/5 rounded-2xl transition-all font-medium">
+            </button>
+            <button className="flex w-full text-left items-center gap-4 px-4 py-3 text-slate-300 hover:text-white hover:bg-white/5 rounded-2xl transition-all font-medium">
               <Megaphone className="w-5 h-5" /> Announcements
-            </a>
-            <a href="#" className="flex items-center gap-4 px-4 py-3 text-slate-300 hover:text-white hover:bg-white/5 rounded-2xl transition-all font-medium">
+            </button>
+            <button className="flex w-full text-left items-center gap-4 px-4 py-3 text-slate-300 hover:text-white hover:bg-white/5 rounded-2xl transition-all font-medium">
               <BarChart3 className="w-5 h-5" /> Analytics
-            </a>
+            </button>
           </nav>
 
           <div className="mt-auto space-y-2 pt-6 border-t border-white/10">
-            <a href="#" className="flex items-center gap-4 px-4 py-3 bg-white/5 text-slate-200 rounded-2xl transition-all font-medium border border-white/5">
+            <button className="flex w-full text-left items-center gap-4 px-4 py-3 bg-white/5 text-slate-200 rounded-2xl transition-all font-medium border border-white/5">
               <Settings className="w-5 h-5 text-purple-400" /> Settings
-            </a>
+            </button>
             <button onClick={logout} className="w-full flex items-center gap-4 px-4 py-3 text-slate-300 hover:text-white hover:bg-white/5 rounded-2xl transition-all font-medium">
               <User className="w-5 h-5" /> Profile
             </button>
