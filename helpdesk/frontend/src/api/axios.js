@@ -14,7 +14,8 @@
 
 import axios from 'axios';
 
-const baseURL = process.env.REACT_APP_API_URL || 'https://helpdesk-backend-production-edb5.up.railway.app';
+let baseURL = process.env.REACT_APP_API_URL || 'https://helpdesk-backend-production-edb5.up.railway.app';
+baseURL = baseURL.replace(/\/+$/, '');
 
 const api = axios.create({
   baseURL,

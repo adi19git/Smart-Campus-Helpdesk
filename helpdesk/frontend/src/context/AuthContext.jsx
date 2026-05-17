@@ -39,7 +39,8 @@ export const AuthProvider = ({ children }) => {
    * Stores JWT tokens and decoded user info in localStorage.
    */
   const login = async (username, password) => {
-    const baseURL = process.env.REACT_APP_API_URL || 'https://helpdesk-backend-production-edb5.up.railway.app';
+    let baseURL = process.env.REACT_APP_API_URL || 'https://helpdesk-backend-production-edb5.up.railway.app';
+    baseURL = baseURL.replace(/\/+$/, '');
 
     const response = await axios.post(`${baseURL}/api/token/`, {
       username,
@@ -69,7 +70,8 @@ export const AuthProvider = ({ children }) => {
    * Does NOT auto-login — the user must log in after registration.
    */
   const register = async (data) => {
-    const baseURL = process.env.REACT_APP_API_URL || 'https://helpdesk-backend-production-edb5.up.railway.app';
+    let baseURL = process.env.REACT_APP_API_URL || 'https://helpdesk-backend-production-edb5.up.railway.app';
+    baseURL = baseURL.replace(/\/+$/, '');
 
     const response = await axios.post(`${baseURL}/api/register/`, data);
     return response.data;
