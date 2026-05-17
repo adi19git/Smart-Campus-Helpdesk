@@ -6,7 +6,10 @@ import os, sys, django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'helpdesk.settings')
 
 # Connect to Railway's PUBLIC database URL
-DB_URL = 'postgresql://postgres:***REMOVED***@yamanote.proxy.rlwy.net:14070/railway'
+DB_URL = os.environ.get('DATABASE_URL')
+if not DB_URL:
+    print("ERROR: DATABASE_URL environment variable is required.")
+    sys.exit(1)
 
 from urllib.parse import urlparse
 p = urlparse(DB_URL)
@@ -35,7 +38,8 @@ if 'auth_user' not in tables:
 
 # Hash the password using Django's hasher
 django.setup()
-hashed = make_password('***REMOVED***')
+admin_password = os.environ.get('ADMIN_PASSWORD', 'admin_pass_placeholder')
+hashed = make_password(admin_password)
 
 # Create superuser
 cur.execute("""
@@ -49,7 +53,8 @@ row = cur.fetchone()
 print(f"Superuser ready: id={row[0]}, username={row[1]}, is_staff={row[2]}, is_superuser={row[3]}")
 
 # Also create a student user
-hashed_student = make_password('***REMOVED***')
+student_password = os.environ.get('STUDENT_PASSWORD', 'student_pass_placeholder')
+hashed_student = make_password(student_password)
 cur.execute("""
     INSERT INTO auth_user (username, email, password, is_staff, is_superuser, is_active, first_name, last_name, date_joined)
     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, NOW())
@@ -60,5 +65,5 @@ print("Student user created: student1")
 
 conn.close()
 print("\nDone! Login credentials:")
-print("  Admin:   username=admin, password=***REMOVED***")
-print("  Student: username=student1, password=***REMOVED***")
+print(f"  Admin:   username=admin, password={admin_password}")
+print(f"  Student: username=student1, password={student_password}")

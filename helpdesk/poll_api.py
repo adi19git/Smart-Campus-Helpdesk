@@ -1,6 +1,7 @@
-import urllib.request, json, time, sys
+import urllib.request, json, time, sys, os
 
-data = json.dumps({"username":"admin","password":"***REMOVED***"}).encode('utf-8')
+admin_password = os.environ.get('ADMIN_PASSWORD', 'admin_pass_placeholder')
+data = json.dumps({"username":"admin","password":admin_password}).encode('utf-8')
 req = urllib.request.Request('https://helpdesk-backend-production-edb5.up.railway.app/api/token/', data=data, headers={'Content-Type': 'application/json'})
 
 print("Polling endpoint...")
