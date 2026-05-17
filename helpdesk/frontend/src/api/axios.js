@@ -14,7 +14,7 @@
 
 import axios from 'axios';
 
-const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+const baseURL = process.env.REACT_APP_API_URL || 'https://helpdesk-backend-production-edb5.up.railway.app';
 
 const api = axios.create({
   baseURL,
