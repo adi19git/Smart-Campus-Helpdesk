@@ -168,7 +168,7 @@ STORAGES = {
 # ---------------------------------------------------------------------------
 # CORS — Cross-Origin Resource Sharing
 # ---------------------------------------------------------------------------
-CORS_ALLOW_ALL_ORIGINS = os.environ.get('CORS_ALLOW_ALL_ORIGINS', 'False') == 'True'
+CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
