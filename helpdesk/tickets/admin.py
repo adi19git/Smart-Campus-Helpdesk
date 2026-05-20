@@ -12,7 +12,7 @@ class TicketAdmin(admin.ModelAdmin):
 
     list_display = (
         'id', 'title', 'user', 'category', 'priority',
-        'status', 'rating', 'created_at', 'updated_at',
+        'status', 'rating', 'short_review', 'created_at', 'updated_at',
     )
     list_filter = ('status', 'priority', 'category', 'created_at')
     search_fields = ('title', 'description', 'user__username', 'review')
@@ -20,6 +20,12 @@ class TicketAdmin(admin.ModelAdmin):
     list_per_page = 25
     ordering = ('-created_at',)
     readonly_fields = ('created_at', 'updated_at')
+
+    def short_review(self, obj):
+        if obj.review:
+            return obj.review[:50] + '...' if len(obj.review) > 50 else obj.review
+        return '—'
+    short_review.short_description = 'Review'
 
     fieldsets = (
         ('Ticket Info', {
