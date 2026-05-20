@@ -17,7 +17,7 @@ from .models import Ticket
 
 
 class TicketSerializer(serializers.ModelSerializer):
-    """Serializer for Ticket model with read-only user field and rating validation."""
+    """Serializer for Ticket model with read-only user field and rating/review validation."""
 
     user = serializers.ReadOnlyField(source='user.username')
 
@@ -30,6 +30,15 @@ class TicketSerializer(serializers.ModelSerializer):
         if value is not None and (value < 1 or value > 5):
             raise serializers.ValidationError(
                 "Rating must be between 1 and 5."
+            )
+        return value
+
+    def validate_review(self, value):
+        """Trim whitespace and cap review length at 2000 characters."""
+        value = value.strip()
+        if len(value) > 2000:
+            raise serializers.ValidationError(
+                "Review must be 2000 characters or fewer."
             )
         return value
 

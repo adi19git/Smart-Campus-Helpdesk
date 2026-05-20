@@ -226,12 +226,12 @@ const AdminDashboard = () => {
             className="w-full pl-10 pr-4 py-2.5 bg-transparent border-none text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none font-medium text-sm"
           />
         </div>
-        <div className="flex items-center gap-2 px-2 pb-1 sm:pb-0">
+        <div className="flex items-center gap-2 px-2 pb-1 sm:pb-0 flex-wrap sm:flex-nowrap">
           <div className="w-px h-7 bg-slate-200 dark:bg-slate-700 hidden sm:block mx-1" />
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="px-3 py-2 bg-slate-50 dark:bg-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200/60 dark:border-slate-600 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+            className="w-full sm:w-auto px-3 py-2 bg-slate-50 dark:bg-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200/60 dark:border-slate-600 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500/30"
           >
             <option value="">All Categories</option>
             <option value="classroom">Classroom</option>
@@ -241,7 +241,7 @@ const AdminDashboard = () => {
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value)}
-            className="px-3 py-2 bg-slate-50 dark:bg-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200/60 dark:border-slate-600 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+            className="w-full sm:w-auto px-3 py-2 bg-slate-50 dark:bg-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200/60 dark:border-slate-600 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500/30"
           >
             <option value="">All Statuses</option>
             <option value="open">Open</option>
@@ -273,10 +273,10 @@ const AdminDashboard = () => {
                 <tr className="bg-slate-50/80 dark:bg-slate-700/30 border-b border-slate-200/80 dark:border-slate-700/50">
                   <th className="px-5 py-3.5 text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Ticket</th>
                   <th className="px-5 py-3.5 text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">User</th>
-                  <th className="px-5 py-3.5 text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Priority</th>
+                  <th className="hidden md:table-cell px-5 py-3.5 text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Priority</th>
                   <th className="px-5 py-3.5 text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status</th>
-                  <th className="px-5 py-3.5 text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Date</th>
-                  <th className="px-5 py-3.5 text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-center">Rating</th>
+                  <th className="hidden lg:table-cell px-5 py-3.5 text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Date</th>
+                  <th className="hidden lg:table-cell px-5 py-3.5 text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-center">Rating</th>
                   <th className="px-5 py-3.5 text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-right">Actions</th>
                 </tr>
               </thead>
@@ -300,7 +300,7 @@ const AdminDashboard = () => {
                         <span className="text-sm font-medium text-slate-700 dark:text-slate-300">{ticket.user}</span>
                       </div>
                     </td>
-                    <td className="px-5 py-4">
+                    <td className="hidden md:table-cell px-5 py-4">
                       <PriorityBadge priority={ticket.priority} size="xs" />
                     </td>
                     <td className="px-5 py-4">
@@ -314,10 +314,10 @@ const AdminDashboard = () => {
                         <option value="closed">Closed</option>
                       </select>
                     </td>
-                    <td className="px-5 py-4 text-sm font-medium text-slate-500 dark:text-slate-400">
+                    <td className="hidden lg:table-cell px-5 py-4 text-sm font-medium text-slate-500 dark:text-slate-400">
                       {ticket.created_at ? format(new Date(ticket.created_at), 'MMM d, yyyy') : '—'}
                     </td>
-                    <td className="px-5 py-4 text-center">
+                    <td className="hidden lg:table-cell px-5 py-4 text-center">
                       <StarRating rating={ticket.rating} readonly size="sm" />
                     </td>
                     <td className="px-5 py-4 text-right">

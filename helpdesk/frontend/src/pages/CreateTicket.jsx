@@ -79,11 +79,10 @@ const CreateTicket = () => {
                 key={cat.value}
                 type="button"
                 onClick={() => setFormData({ ...formData, category: cat.value })}
-                className={`flex flex-col items-center gap-1.5 p-3 rounded-xl border transition-all ${
-                  isSelected
+                className={`flex flex-col items-center gap-1.5 p-3 rounded-xl border transition-all ${isSelected
                     ? `${cat.color} ring-2 ring-offset-1 ring-blue-400 dark:ring-blue-500 dark:ring-offset-slate-800`
                     : 'border-slate-100 dark:border-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-700/30'
-                }`}
+                  }`}
               >
                 <CatIcon className={`w-5 h-5 ${isSelected ? '' : 'text-slate-400 dark:text-slate-500'}`} />
                 <span className={`text-[11px] font-semibold ${isSelected ? '' : 'text-slate-500 dark:text-slate-400'}`}>{cat.label}</span>
@@ -135,15 +134,14 @@ const CreateTicket = () => {
                   key={p}
                   type="button"
                   onClick={() => setFormData({ ...formData, priority: p })}
-                  className={`flex-1 py-2.5 rounded-xl text-sm font-semibold capitalize transition-all border ${
-                    formData.priority === p
+                  className={`flex-1 py-2.5 rounded-xl text-sm font-semibold capitalize transition-all border ${formData.priority === p
                       ? p === 'high'
                         ? 'bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-200 dark:border-rose-500/30 ring-1 ring-rose-200 dark:ring-rose-500/20'
                         : p === 'medium'
-                        ? 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-500/30 ring-1 ring-amber-200 dark:ring-amber-500/20'
-                        : 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-500/30 ring-1 ring-emerald-200 dark:ring-emerald-500/20'
+                          ? 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-500/30 ring-1 ring-amber-200 dark:ring-amber-500/20'
+                          : 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-500/30 ring-1 ring-emerald-200 dark:ring-emerald-500/20'
                       : 'bg-white dark:bg-slate-700/30 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700/50'
-                  }`}
+                    }`}
                 >
                   {p}
                 </button>

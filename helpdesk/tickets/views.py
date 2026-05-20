@@ -185,23 +185,29 @@ class TicketViewSet(viewsets.ModelViewSet):
             status=status.HTTP_201_CREATED,
         )
 
-    # ---------- PARTIAL UPDATE (status or rating) ----------
+    # ---------- PARTIAL UPDATE (status, rating, or review) ----------
     def partial_update(self, request, *args, **kwargs):
         ticket = self.get_object()
 
-        # Non-staff users can only update rating on closed tickets
+        # Non-staff users can only update rating/review on closed tickets
         if not request.user.is_staff:
-            allowed_keys = {'rating'}
+            allowed_keys = {'rating', 'review'}
             request_keys = set(request.data.keys())
 
             if not request_keys.issubset(allowed_keys):
                 return Response(
-                    {"error": "Students can only update the ticket rating."},
+                    {"error": "Students can only update the ticket rating and review."},
                     status=status.HTTP_403_FORBIDDEN,
                 )
             if ticket.status != 'closed':
                 return Response(
-                    {"error": "You can only rate a closed ticket."},
+                    {"error": "You can only rate or review a closed ticket."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            # Prevent overwriting an existing rating (review once only)
+            if ticket.rating is not None and 'rating' in request.data:
+                return Response(
+                    {"error": "You have already submitted a rating for this ticket."},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
 

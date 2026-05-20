@@ -58,12 +58,15 @@ export const deleteTicket = async (id) => {
 };
 
 /**
- * Rate a closed ticket (student only).
- * @param {number} id - Ticket ID
- * @param {number} rating - Rating value: 1-5
+ * Rate a closed ticket and optionally leave a written review (student only).
+ * @param {number} id     - Ticket ID
+ * @param {number} rating - Rating value: 1–5
+ * @param {string} review - Optional written comment (max 2000 chars)
  */
-export const rateTicket = async (id, rating) => {
-  const response = await api.patch(`/api/tickets/${id}/`, { rating });
+export const rateTicket = async (id, rating, review = '') => {
+  const payload = { rating };
+  if (review && review.trim()) payload.review = review.trim();
+  const response = await api.patch(`/api/tickets/${id}/`, payload);
   return response.data;
 };
 

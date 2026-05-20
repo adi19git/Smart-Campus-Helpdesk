@@ -15,7 +15,7 @@ class TicketAdmin(admin.ModelAdmin):
         'status', 'rating', 'created_at', 'updated_at',
     )
     list_filter = ('status', 'priority', 'category', 'created_at')
-    search_fields = ('title', 'description', 'user__username')
+    search_fields = ('title', 'description', 'user__username', 'review')
     list_editable = ('status', 'priority')
     list_per_page = 25
     ordering = ('-created_at',)
@@ -28,8 +28,8 @@ class TicketAdmin(admin.ModelAdmin):
         ('Classification', {
             'fields': ('category', 'priority', 'status'),
         }),
-        ('Feedback', {
-            'fields': ('rating',),
+        ('Student Feedback', {
+            'fields': ('rating', 'review'),
         }),
         ('Timestamps', {
             'fields': ('created_at', 'updated_at'),

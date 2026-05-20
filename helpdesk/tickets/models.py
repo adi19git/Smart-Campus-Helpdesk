@@ -4,31 +4,37 @@ from django.contrib.auth.models import User
 class Ticket(models.Model):
 
     CATEGORY_CHOICES = [
-        ('classroom', 'Classroom'),
-        ('hostel', 'Hostel'),
-        ('network', 'Network'),
+        ('classroom',   'Classroom'),
+        ('hostel',      'Hostel'),
+        ('network',     'Network / Wi-Fi'),
+        ('electricity', 'Electricity'),
+        ('cleanliness', 'Cleanliness'),
+        ('transport',   'Transport'),
     ]
 
     PRIORITY_CHOICES = [
-        ('low', 'Low'),
+        ('low',    'Low'),
         ('medium', 'Medium'),
-        ('high', 'High'),
+        ('high',   'High'),
     ]
 
     STATUS_CHOICES = [
-        ('open', 'Open'),
+        ('open',        'Open'),
         ('in-progress', 'In Progress'),
-        ('closed', 'Closed'),
+        ('closed',      'Closed'),
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    title = models.CharField(max_length=200)
+    title       = models.CharField(max_length=200)
     description = models.TextField()
-    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
-    priority = models.CharField(max_length=10, choices=PRIORITY_CHOICES)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='open')
-    rating = models.IntegerField(null=True, blank=True)
+    category    = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
+    priority    = models.CharField(max_length=10, choices=PRIORITY_CHOICES)
+    status      = models.CharField(max_length=20, choices=STATUS_CHOICES, default='open')
+    rating      = models.IntegerField(null=True, blank=True)
+
+    # Student written review / comment submitted after ticket is closed
+    review = models.TextField(blank=True, default='')
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

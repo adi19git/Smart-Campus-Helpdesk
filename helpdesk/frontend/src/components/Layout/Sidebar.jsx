@@ -76,7 +76,7 @@ const Sidebar = ({ isOpen, onClose }) => {
               to={link.path}
               onClick={onClose}
               className={({ isActive }) =>
-                `flex items-center ${collapsed ? 'justify-center' : ''} gap-3 ${collapsed ? 'px-3' : 'px-4'} py-2.5 rounded-xl transition-all duration-200 group ${
+                `flex items-center ${collapsed ? 'justify-center' : ''} gap-3 ${collapsed ? 'px-3' : 'px-4'} py-3 rounded-xl transition-all duration-200 group ${
                   isActive
                     ? 'bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 font-semibold shadow-sm border border-blue-100 dark:border-blue-500/20'
                     : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700/30 hover:text-slate-900 dark:hover:text-white'
@@ -95,7 +95,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         {/* Theme Toggle */}
         <button
           onClick={toggleTheme}
-          className={`flex items-center ${collapsed ? 'justify-center' : ''} gap-3 w-full ${collapsed ? 'px-3' : 'px-4'} py-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700/30 hover:text-slate-900 dark:hover:text-white transition-all text-sm`}
+          className={`flex items-center ${collapsed ? 'justify-center' : ''} gap-3 w-full ${collapsed ? 'px-3' : 'px-4'} py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700/30 hover:text-slate-900 dark:hover:text-white transition-all text-sm`}
         >
           {isDark ? <Sun className="w-5 h-5 flex-shrink-0" /> : <Moon className="w-5 h-5 flex-shrink-0" />}
           {!collapsed && <span>{isDark ? 'Light Mode' : 'Dark Mode'}</span>}
@@ -121,7 +121,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         {/* Logout */}
         <button
           onClick={handleLogout}
-          className={`flex items-center ${collapsed ? 'justify-center' : ''} gap-3 w-full ${collapsed ? 'px-3' : 'px-4'} py-2.5 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 hover:text-rose-600 dark:hover:text-rose-400 transition-all text-sm`}
+          className={`flex items-center ${collapsed ? 'justify-center' : ''} gap-3 w-full ${collapsed ? 'px-3' : 'px-4'} py-3 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 hover:text-rose-600 dark:hover:text-rose-400 transition-all text-sm`}
         >
           <LogOut className="w-5 h-5 flex-shrink-0" />
           {!collapsed && <span>Logout</span>}
