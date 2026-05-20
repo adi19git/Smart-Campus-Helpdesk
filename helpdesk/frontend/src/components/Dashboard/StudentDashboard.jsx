@@ -10,7 +10,6 @@ import toast from 'react-hot-toast';
 import { getTickets, rateTicket, createTicket } from '../../api/tickets';
 import StatsCard from '../ui/StatsCard';
 import StatusBadge, { PriorityBadge } from '../ui/StatusBadge';
-import StarRating from '../ui/StarRating';
 import Modal from '../ui/Modal';
 import LoadingSkeleton from '../ui/LoadingSkeleton';
 import EmptyState from '../ui/EmptyState';
