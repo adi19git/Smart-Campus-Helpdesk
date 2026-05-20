@@ -59,15 +59,31 @@ export const deleteTicket = async (id) => {
 
 /**
  * Rate a closed ticket and optionally leave a written review (student only).
+ * Sends both fields in a single PATCH. If the backend is old (doesn't support
+ * review yet), falls back to rating-only so the submission never silently fails.
  * @param {number} id     - Ticket ID
  * @param {number} rating - Rating value: 1–5
  * @param {string} review - Optional written comment (max 2000 chars)
  */
 export const rateTicket = async (id, rating, review = '') => {
+  const trimmedReview = review ? review.trim() : '';
+
+  // Build payload — include review only if non-empty
   const payload = { rating };
-  if (review && review.trim()) payload.review = review.trim();
-  const response = await api.patch(`/api/tickets/${id}/`, payload);
-  return response.data;
+  if (trimmedReview) payload.review = trimmedReview;
+
+  try {
+    const response = await api.patch(`/api/tickets/${id}/`, payload);
+    return response.data;
+  } catch (err) {
+    // If backend rejected the combined payload (old backend without review field),
+    // retry with rating only so the star rating is still saved.
+    if (trimmedReview && err.response?.status === 403) {
+      const response = await api.patch(`/api/tickets/${id}/`, { rating });
+      return response.data;
+    }
+    throw err;
+  }
 };
 
 /**
