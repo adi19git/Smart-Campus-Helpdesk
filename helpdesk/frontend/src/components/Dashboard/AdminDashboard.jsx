@@ -107,10 +107,10 @@ const AdminDashboard = () => {
     <div className="space-y-6">
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatsCard icon={Ticket} value={totalTickets} label="Total Complaints" color="indigo" delay={0} />
-        <StatsCard icon={AlertCircle} value={openTickets} label="Pending" color="rose" delay={0.05} />
-        <StatsCard icon={Clock} value={inProgressTickets} label="In Progress" color="amber" delay={0.1} />
-        <StatsCard icon={CheckCircle} value={closedTickets} label="Resolved" color="emerald" delay={0.15} />
+        <StatsCard icon={Ticket}       value={totalTickets}     label="Total Complaints" color="violet" delay={0}    />
+        <StatsCard icon={AlertCircle}  value={openTickets}      label="Pending"          color="pink"   delay={0.05} />
+        <StatsCard icon={Clock}        value={inProgressTickets}label="In Progress"      color="orange" delay={0.1}  />
+        <StatsCard icon={CheckCircle}  value={closedTickets}    label="Resolved"         color="green"  delay={0.15} />
       </div>
 
       {/* Charts */}

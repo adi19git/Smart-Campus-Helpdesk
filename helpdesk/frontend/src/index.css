@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* ── Google Fonts ─────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;0,14..32,900&family=Outfit:wght@700;800;900&display=swap');
 
 @layer base {
   body {
@@ -45,17 +45,31 @@
   @apply bg-slate-200 dark:bg-slate-700 rounded-full;
 }
 
-/* ── Aurora Background (Login) ───────────────────────────────── */
+/* ── Aurora Background (Legacy fallback only) ────────────────── */
 @keyframes aurora {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
-.aurora-bg {
-  background: linear-gradient(-45deg, #1e1b4b, #312e81, #4c1d95, #1e3a8a, #0f172a);
-  background-size: 400% 400%;
-  animation: aurora 20s ease infinite;
+/* ── Premium Login Keyframes ─────────────────────────────────── */
+@keyframes premiumFloat {
+  0%, 100% { transform: translateY(0px);  }
+  50%       { transform: translateY(-8px); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 20px rgba(37,99,235,0.3); }
+  50%       { box-shadow: 0 0 40px rgba(37,99,235,0.6); }
+}
+
+@keyframes slideInFromLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0);     }
+}
+
+@keyframes ripple {
+  to { transform: scale(4); opacity: 0; }
 }
 
 /* ── Glass Card (Login/Register) ─────────────────────────────── */
@@ -138,18 +152,41 @@
 
 /* ── Smooth Transitions ──────────────────────────────────────── */
 *, *::before, *::after {
-  transition-property: background-color, border-color, color;
-  transition-duration: 150ms;
-  transition-timing-function: ease;
+  transition-property: background-color, border-color, color, box-shadow;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Override for elements that need instant transitions */
-input, textarea, select, button, a {
+/* Override for elements that need precise control */
+input, textarea, select {
+  transition-property: border-color, box-shadow, background-color;
+  transition-duration: 200ms;
+}
+
+button, a {
   transition-property: all;
-  transition-duration: 150ms;
+  transition-duration: 180ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* ── Select arrow styling (dark mode fix) ────────────────────── */
 .dark select {
   color-scheme: dark;
+}
+
+/* ── Chrome Autofill Transparent Background Fix ──────────────── */
+/* Prevents the browser from replacing transparent inputs with solid white */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s !important;
+  -webkit-text-fill-color: rgba(0, 0, 0, 0.85) !important;
+}
+
+.dark input:-webkit-autofill,
+.dark input:-webkit-autofill:hover,
+.dark input:-webkit-autofill:focus,
+.dark input:-webkit-autofill:active {
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.92) !important;
 }

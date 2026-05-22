@@ -300,10 +300,10 @@ const StudentDashboard = () => {
 
       {/* ── Stats Row ──────────────────────────────────────────────── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        <StatsCard icon={Ticket}      value={totalTickets} label="Total Tickets" color="indigo"  delay={0}    />
-        <StatsCard icon={AlertCircle} value={openTickets}  label="Open Issues"  color="rose"    delay={0.05} />
-        <StatsCard icon={Clock}       value={inProgress}   label="In Progress"  color="amber"   delay={0.1}  />
-        <StatsCard icon={CheckCircle} value={closedTickets}label="Resolved"     color="emerald" delay={0.15} />
+        <StatsCard icon={Ticket}      value={totalTickets} label="Total Tickets" color="violet"  delay={0}    />
+        <StatsCard icon={AlertCircle} value={openTickets}  label="Open Issues"  color="pink"    delay={0.05} />
+        <StatsCard icon={Clock}       value={inProgress}   label="In Progress"  color="orange"  delay={0.1}  />
+        <StatsCard icon={CheckCircle} value={closedTickets}label="Resolved"     color="green"   delay={0.15} />
       </div>
 
       {/* ── Pending Reviews Banner ─────────────────────────────────── */}
