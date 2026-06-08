@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, PlusCircle, LogOut, Sun, Moon, ChevronLeft, GraduationCap, X } from 'lucide-react';
+import { LayoutDashboard, PlusCircle, LogOut, Sun, Moon, ChevronLeft, GraduationCap, X, BarChart3 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -18,6 +18,7 @@ const Sidebar = ({ isOpen, onClose }) => {
 
   const navLinks = [
     { name: 'Dashboard', path: '/', icon: LayoutDashboard },
+    ...(user?.isStaff ? [{ name: 'Analytics', path: '/analytics', icon: BarChart3 }] : []),
     { name: 'New Ticket', path: '/tickets/new', icon: PlusCircle },
   ];
 

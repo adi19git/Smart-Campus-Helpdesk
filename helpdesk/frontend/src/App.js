@@ -8,6 +8,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import CreateTicket from './pages/CreateTicket';
+import Analytics from './pages/Analytics';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             <Route element={<ProtectedRoute />}>
               <Route path="/" element={<Dashboard />} />
               <Route path="/tickets/new" element={<CreateTicket />} />
+              <Route path="/analytics" element={<Analytics />} />
             </Route>
 
             {/* Catch-all — redirect to dashboard */}

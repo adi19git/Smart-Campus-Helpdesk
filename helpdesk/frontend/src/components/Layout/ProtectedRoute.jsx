@@ -7,6 +7,7 @@ import TopNavbar from './TopNavbar';
 const pageMeta = {
   '/': { title: 'Dashboard', subtitle: 'Overview of your helpdesk activity' },
   '/tickets/new': { title: 'Create Ticket', subtitle: 'Submit a new support request' },
+  '/analytics': { title: 'Analytics', subtitle: 'In-depth performance metrics & insights' },
 };
 
 const ProtectedRoute = () => {

@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
-import { Search, Trash2, Ticket, Clock, CheckCircle, AlertCircle, TrendingUp } from 'lucide-react';
+import { Search, Trash2, Ticket, Clock, CheckCircle, AlertCircle, BarChart3, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { BarChart, Bar, PieChart, Pie, Cell, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { getTickets, deleteTicket, updateTicketStatus } from '../../api/tickets';
 import StatsCard from '../ui/StatsCard';
@@ -66,35 +66,6 @@ const AdminDashboard = () => {
   const inProgressTickets = tickets.filter(t => t.status === 'in-progress').length;
   const closedTickets = tickets.filter(t => t.status === 'closed').length;
 
-  // Chart data
-  const categoryData = useMemo(() => {
-    const counts = {};
-    tickets.forEach(t => {
-      const cat = t.category || 'other';
-      counts[cat] = (counts[cat] || 0) + 1;
-    });
-    return Object.entries(counts).map(([name, value]) => ({
-      name: name.charAt(0).toUpperCase() + name.slice(1),
-      tickets: value,
-    }));
-  }, [tickets]);
-
-  const statusData = useMemo(() => [
-    { name: 'Open', value: openTickets, color: '#6366f1' },
-    { name: 'In Progress', value: inProgressTickets, color: '#3b82f6' },
-    { name: 'Closed', value: closedTickets, color: '#10b981' },
-  ], [openTickets, inProgressTickets, closedTickets]);
-
-  const trendData = useMemo(() => {
-    const days = {};
-    tickets.forEach(t => {
-      if (!t.created_at) return;
-      const day = format(new Date(t.created_at), 'MMM d');
-      days[day] = (days[day] || 0) + 1;
-    });
-    return Object.entries(days).slice(-7).map(([date, count]) => ({ date, tickets: count }));
-  }, [tickets]);
-
   const getStatusClasses = (s) => {
     switch (s) {
       case 'closed': return 'bg-emerald-50 text-emerald-700 ring-emerald-600/20 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/20';
@@ -113,102 +84,28 @@ const AdminDashboard = () => {
         <StatsCard icon={CheckCircle}  value={closedTickets}    label="Resolved"         color="green"  delay={0.15} />
       </div>
 
-      {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* Bar Chart - Department wise */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bg-white dark:bg-slate-800/50 rounded-2xl border border-slate-200/60 dark:border-slate-700/50 p-5 shadow-sm lg:col-span-2"
+      {/* Analytics Link Banner */}
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+      >
+        <Link
+          to="/analytics"
+          className="group flex items-center justify-between bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 rounded-2xl px-5 py-4 shadow-md hover:shadow-lg hover:shadow-indigo-500/20 transition-all"
         >
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h3 className="text-sm font-bold text-slate-900 dark:text-white">Department Distribution</h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Tickets by category</p>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center border border-white/20">
+              <BarChart3 className="w-5 h-5 text-white" />
             </div>
-            <TrendingUp className="w-4 h-4 text-slate-400" />
+            <div>
+              <p className="text-sm font-bold text-white">View Detailed Analytics</p>
+              <p className="text-xs text-white/70 mt-0.5">Charts, trends, ratings & performance insights</p>
+            </div>
           </div>
-          <ResponsiveContainer width="100%" height={220}>
-            <BarChart data={categoryData} barSize={32}>
-              <CartesianGrid strokeDasharray="3 3" stroke="var(--grid-color, #e2e8f0)" strokeOpacity={0.5} />
-              <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 11, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
-              <Tooltip
-                contentStyle={{
-                  background: 'white', border: '1px solid #e2e8f0', borderRadius: 12, fontSize: 12, boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
-                }}
-              />
-              <Bar dataKey="tickets" fill="#6366f1" radius={[6, 6, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </motion.div>
-
-        {/* Pie Chart - Status */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.25 }}
-          className="bg-white dark:bg-slate-800/50 rounded-2xl border border-slate-200/60 dark:border-slate-700/50 p-5 shadow-sm"
-        >
-          <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-1">Status Breakdown</h3>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">Current ticket states</p>
-          <ResponsiveContainer width="100%" height={180}>
-            <PieChart>
-              <Pie
-                data={statusData}
-                cx="50%"
-                cy="50%"
-                innerRadius={45}
-                outerRadius={70}
-                paddingAngle={4}
-                dataKey="value"
-              >
-                {statusData.map((entry, i) => (
-                  <Cell key={i} fill={entry.color} />
-                ))}
-              </Pie>
-              <Tooltip
-                contentStyle={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: 12, fontSize: 12 }}
-              />
-              <Legend
-                verticalAlign="bottom"
-                iconType="circle"
-                iconSize={8}
-                formatter={(value) => <span style={{ fontSize: 11, color: '#64748b' }}>{value}</span>}
-              />
-            </PieChart>
-          </ResponsiveContainer>
-        </motion.div>
-      </div>
-
-      {/* Trend Chart */}
-      {trendData.length > 1 && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="bg-white dark:bg-slate-800/50 rounded-2xl border border-slate-200/60 dark:border-slate-700/50 p-5 shadow-sm"
-        >
-          <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-1">Ticket Trend</h3>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">Recent ticket volume</p>
-          <ResponsiveContainer width="100%" height={180}>
-            <AreaChart data={trendData}>
-              <defs>
-                <linearGradient id="colorTickets" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#6366f1" stopOpacity={0.2} />
-                  <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" strokeOpacity={0.5} />
-              <XAxis dataKey="date" tick={{ fontSize: 11, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 11, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
-              <Tooltip contentStyle={{ background: 'white', border: '1px solid #e2e8f0', borderRadius: 12, fontSize: 12 }} />
-              <Area type="monotone" dataKey="tickets" stroke="#6366f1" strokeWidth={2} fill="url(#colorTickets)" />
-            </AreaChart>
-          </ResponsiveContainer>
-        </motion.div>
-      )}
+          <ArrowRight className="w-5 h-5 text-white/70 group-hover:text-white group-hover:translate-x-1 transition-all" />
+        </Link>
+      </motion.div>
 
       {/* Filters */}
       <motion.div
