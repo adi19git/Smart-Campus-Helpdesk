@@ -1,3 +1,10 @@
+# ─── Render Blueprint ────────────────────────────────────────────────
+# Defines the infrastructure for the Smart Campus Helpdesk backend.
+# Frontend is deployed separately on Vercel.
+#
+# Deploy via: https://render.com/deploy → connect your GitHub repo
+# ─────────────────────────────────────────────────────────────────────
+
 databases:
   - name: helpdesk-db
     plan: free
@@ -5,14 +12,13 @@ databases:
     user: helpdesk_user
 
 services:
-  # ── Django Backend ──────────────────────────────────────────────
   - type: web
     name: helpdesk-backend
-    env: python
+    runtime: python
     plan: free
     rootDir: helpdesk
     buildCommand: "./build.sh"
-    startCommand: "python manage.py migrate && gunicorn helpdesk.wsgi:application"
+    startCommand: "gunicorn helpdesk.wsgi:application --bind 0.0.0.0:$PORT"
 
     envVars:
       - key: DATABASE_URL
@@ -26,6 +32,12 @@ services:
       - key: DEBUG
         value: "False"
 
+      - key: RENDER
+        value: "true"
+
+      - key: PYTHON_VERSION
+        value: "3.12.3"
+
       - key: ALLOWED_HOSTS
         value: ".onrender.com"
 
@@ -35,25 +47,8 @@ services:
       - key: CSRF_TRUSTED_ORIGINS
         value: "https://smart-campus-helpdesk-a548.vercel.app"
 
-      - key: PYTHON_VERSION
-        value: "3.12.3"
+      - key: ADMIN_PASSWORD
+        value: "Admin@2026!"
 
-  # ── React Frontend (Static Site) ────────────────────────────────
-  - type: web
-    runtime: static
-    name: helpdesk-frontend
-    rootDir: helpdesk/frontend
-    buildCommand: "npm install && npm run build"
-    staticPublishPath: "./build"
-
-    envVars:
-      - key: REACT_APP_API_URL
-        fromService:
-          type: web
-          name: helpdesk-backend
-          envVarKey: RENDER_EXTERNAL_URL
-
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
+      - key: STUDENT_PASSWORD
+        value: "Student@2026!"

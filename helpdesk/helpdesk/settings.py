@@ -106,8 +106,8 @@ WSGI_APPLICATION = 'helpdesk.wsgi.application'
 
 # ---------------------------------------------------------------------------
 # Database
-# Uses DATABASE_URL if available (production), otherwise falls back to SQLite
-# for local development. SSL is only required when DATABASE_URL is set.
+# Uses DATABASE_URL if available (production on Render), otherwise falls back
+# to SQLite for local development. Render's managed Postgres requires SSL.
 # ---------------------------------------------------------------------------
 DATABASE_URL = os.environ.get('DATABASE_URL')
 
@@ -116,13 +116,9 @@ if DATABASE_URL:
         'default': dj_database_url.config(
             default=DATABASE_URL,
             conn_max_age=600,
-            ssl_require=False,
+            ssl_require=True,
         )
     }
-    # Railway internal Postgres does not support SSL — explicitly disable it
-    if 'railway.internal' in DATABASE_URL:
-        DATABASES['default'].setdefault('OPTIONS', {})
-        DATABASES['default']['OPTIONS']['sslmode'] = 'disable'
 else:
     # Local development fallback — SQLite (no external DB required)
     DATABASES = {
@@ -156,6 +152,9 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 STORAGES = {
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
@@ -167,8 +166,10 @@ STORAGES = {
 
 # ---------------------------------------------------------------------------
 # CORS — Cross-Origin Resource Sharing
+# In production, only allow specific origins. Set CORS_ALLOW_ALL=True in env
+# to allow all origins (for debugging only).
 # ---------------------------------------------------------------------------
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = os.environ.get('CORS_ALLOW_ALL', 'False') == 'True'
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
