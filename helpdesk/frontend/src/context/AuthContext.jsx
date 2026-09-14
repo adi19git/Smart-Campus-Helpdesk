@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }) => {
    * Stores JWT tokens and decoded user info in localStorage.
    */
   const login = async (username, password) => {
-    let baseURL = process.env.REACT_APP_API_URL || 'https://helpdesk-backend-production-edb5.up.railway.app';
+    let baseURL = process.env.REACT_APP_API_URL || 'https://smart-campus-helpdesk-1-d2ch.onrender.com';
     baseURL = baseURL.replace(/\/+$/, '');
 
     const response = await axios.post(`${baseURL}/api/token/`, {
@@ -70,7 +70,7 @@ export const AuthProvider = ({ children }) => {
    * Does NOT auto-login — the user must log in after registration.
    */
   const register = async (data) => {
-    let baseURL = process.env.REACT_APP_API_URL || 'https://helpdesk-backend-production-edb5.up.railway.app';
+    let baseURL = process.env.REACT_APP_API_URL || 'https://smart-campus-helpdesk-1-d2ch.onrender.com';
     baseURL = baseURL.replace(/\/+$/, '');
 
     const response = await axios.post(`${baseURL}/api/register/`, data);

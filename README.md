@@ -69,7 +69,7 @@ A full-stack helpdesk management system for university campuses, built with Djan
 
 After the Render backend is deployed, update your Vercel environment variable:
 
-- `REACT_APP_API_URL` → `https://helpdesk-backend.onrender.com` *(your actual Render URL)*
+- `REACT_APP_API_URL` → `https://smart-campus-helpdesk-1-d2ch.onrender.com`
 
 > **Note:** Render's free tier services spin down after 15 minutes of inactivity. The first request after idle may take ~30 seconds to respond.
 
